@@ -1,0 +1,50 @@
+def user_login():
+
+def user_register():
+    print('--' * 15 + 'User Register Interface' + '--' * 15)
+    userFirstname=input('Please enter your first name:')
+    userLastname=input('Please enter your last name:')
+    username=input('Please enter your username:')
+    password=input('Please enter your password:')
+    dateofbirth=input('Please enter your date of birth')
+
+
+def admin_register():
+
+def admin_login():
+
+def userfunction():
+    print('--'*15+'User Interface'+'--'*15)
+    print('Dear user, welcome to User Interface')
+    print('Would you like to register or log in?')
+    b1=int(input('Enter 1 to register or 2 to log in:'))
+    if b1==1:
+        user_register()
+    if b1==2:
+        user_login()
+
+def adminfunction():
+    print('--'*15+'Adminstrator Interface'+'--'*15)
+    print('Dear adminstrator, welcome to Admin Interface')
+    print('Would you like to register or log in?')
+    b1=int(input('Enter 1 to register or 2 to log in:'))
+    if b1==1:
+        admin_register()
+    if b1==2:
+        admin_login()
+
+def choosefrom2roles():
+    while True:
+        print('--'*15+'Character Selection Screen'+'--'*15+'\n'*2)
+        print('Please choose your identity, user or administrator')
+        a1=input("Enter 'user' or 'admin':")
+        if a1=='user':
+            userfunction()
+            break
+        if a1=='admin':
+            adminfunction()
+            break
+        else:
+            print('Fail to identity, please try again')
+            
+choosefrom2roles()
