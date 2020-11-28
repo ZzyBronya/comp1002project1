@@ -1,5 +1,8 @@
-messageuser= {}
-messageadmin={}
+messageuser= {'Tsai-ing':{'password':'12345','first_name':'Tsai','last_name':'Ingwen','Phone_number':'886-22311-3731','relationship':{'Winnie':0,'Trump':1}},
+              'Trump':{'password':'12345','first_name':'Donald','last_name':'Trump','Phone_number':'1234567','relationship':{'Winnie':1,'Tsai-ing':1}},
+             'Winnie':{'password':'12345','first_name':'abc','last_name':'def','Phone_number':'1234567890','relationship':{'Winnie':1,'Tsai-ing':0}}}
+        #username:{'password':'12345','first_name':'Tsai','last_name':'Ingwen'...与别人的关系：{}}三重列表！！最外层列表是用户名，第二层列表是用户个人信息，第三重是与别人关系
+messageadmin={'dennis LIU':{'password':'123456'}}
 
 def isFriend(X,Y):
 def IsDirectSource(A,b):
