@@ -1,5 +1,5 @@
 messageuser= {}
-messageadmin={d}
+messageadmin={}
 
 def isFriend(X,Y):
 def IsDirectSource(A,b):
