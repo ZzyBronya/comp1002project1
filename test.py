@@ -82,7 +82,6 @@ def admin_login():
         admin() #转到管理功能
     else:
         print("Wrong Password")
-    a1=input('Are you going to the admin? yes or no')
 
 def main():
     print("""
