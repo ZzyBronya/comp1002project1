@@ -1,44 +1,128 @@
-# .py -->module 模块  
-# 包文件下第一个文件是_init_.py --> package 包
-# 具有相关功能模块的集合 --> library 库  安装时有标准库，第三方库是由别人开发的
-messageuser= {'Tsai-ing':{'password':'12345','first_name':'Tsai','last_name':'Ingwen','Phone_number':'886-22311-3731','relationship':{'Winnie':0,'Trump':1}},
-              'Trump':{'password':'12345','first_name':'Donald','last_name':'Trump','Phone_number':'1234567','relationship':{'Winnie':1,'Tsai-ing':1}},
-             'Winnie':{'password':'12345','first_name':'abc','last_name':'def','Phone_number':'1234567890','relationship':{'Winnie':1,'Tsai-ing':0}}}
-        #username:{'password':'12345','first_name':'Tsai','last_name':'Ingwen'...与别人的关系：{}}三重列表！！最外层列表是用户名，第二层列表是用户个人信息，第三重是与别人关系
-messageadmin={'dennis LIU':{'password':'123456'}}
+messageuser = {
+    'Tsai-ing': {'password':'12345', 'first_name': 'Tsai', 'last_name': 'Ingwen', 'Phone_number': '886-22311-3731',
+                 'relationship': {'Winnie': 0, 'Trump': 1},'paper':''},
+    'Trump': {'password':'12345', 'first_name': 'Donald', 'last_name': 'Trump', 'Phone_number': '1234567',
+              'relationship': {'Winnie': 1, 'Tsai-ing': 1},'paper':''},
+    'Winnie': {'password':'12345', 'first_name': 'abc', 'last_name': 'def', 'Phone_number': '1234567890',
+               'relationship': {'Winnie': 1, 'Tsai-ing': 0},'paper':''}}
+# username:{'password':'12345','first_name':'Tsai','last_name':'Ingwen'...与别人的关系：{}}三重列表！！最外层列表是用户名，第二层列表是用户个人信息，第三重是与别人关系
+messageadmin = {'dennis LIU': {'password': '123456'}}
 
-def isFriend(X,Y):
-def IsDirectSource(A,b):
-def isSource(A,B):
+
+def isFriend(X, Y):
+
+'''
+def IsDirectSource(A, b):
+
+def isSource(A, B):
+
 def Anchor(A):
+
 def DirectReport(A):
+
 def Report(A):
+
 def NicePrientU(X):
+
 def NicePrintA(A):
+
 def GetU(X):
+
 def GetA(A):
 
-def admin(): # admin function
+'''
+def admin(name):  # admin function
+    print('Hello',name)
+    print("""
+    |---------Welcome to admin interface-----|
+    |--- print out the information for a user：N/n ---|
+    |--- print out the information for an article：S/s ---------|
 
+    |---------- Log out：Q/q --------------|
+    """)
 
-def user(): #user function
-
+def user(name):  # user function
+    print('Hello',name)
+    while True:
+        print("""
+        |--- Welcome to admin interfac------|
+        |--- Submit Paper：N/n -------------|
+        |--- Make friends: S/s--------------|
+        |--- Back to main interface: Q/q----|
+        """)
+        while True: #上传paper
+            chose = 0
+            while not chose:
+                print('\n')
+                order = input("Enter：")
+                if order not in 'NnSsWw':
+                    print("Wrong input, please choose again!")
+                else:
+                    chose = 1
+            if order=='N' or order=='n':# Submit paper
+                paper_index
+                aa=input('Please submit your paper(Just paste here):')
+                messageuser[name]['paper']=aa
+                print('')
+                
+            if order=='S' or order=='s': # Make friends
+                for i in messageuser:
+                    print(i,end='')
+                    print('')
+                    print("Enter your friend's username one by one:")
+                    while True:
+                        a1=input("Enter your friend's username(If no more, enter 'No' exit):")
+                        if a1=='No':
+                            break
+                        elif a1 in messageuser:
+                            messageuser[name]['relationship'][a1]=1
+                            messageuser[a1]['relationship'][name]=1
+                        else:
+                            print()
+            if order=='Q' or order=='q': 
+                main()
+    
 
 def user_register():
-    name = input("Please enter your username")
+    print('User register interface')
+    name = input("Please enter your username:")
     while True:
-        if name in messageuser:#
-            temp = "This username has been taken, try another username："
+        if name in messageuser:  #
+            temp = "This username has been taken, try another username:"
             continue
-        else: # 没有此人的信息
+        else:  # 没有此人的信息
             break
-    pw = input("Please enter your password：")
-    messageuser[name] = pw
+    pw = input("Please enter your password:")
+    messageuser[name]['password'] = pw
+    p1 = input('Please enter your first name:')
+    messageuser[name]['first_name']=p1
+    p2 = input('Please enter your last name:')
+    messageuser[name]['last_name']=p2
+    print("""
+    |------Add auxiliary information one by one-----|
+    |--- Date-of-birth：N/n ---|
+    |---- Phone number：S/s ---------|
+    """)
+    pp=int(input('How many type of information are you going to add:'))
+    while True:
+        chose = 0
+        while  chose <pp:
+            print('\n')
+            order = input("Enter：")
+            if order not in 'NnSs':
+                print("Wrong input, please choose again!")
+            else:
+                chose +=1
+        if order=='N' or order=='n':
+            messageuser[name]['Date-of-birth']=order
+
+        if order=='S' or order=='s':
+            messageuser[name]['Phone_number']=order
     print("Successfully register!")
 
 def user_login():
-    
-    temp = "Please enter your username："
+    print('User login interface')
+    temp = "Please enter your username:"
     while True:
         name = input(temp)
         if name not in messageuser:
@@ -46,30 +130,30 @@ def user_login():
             continue
         else:
             break
-    pw = input("Please enter your password：")
-    password = messageuser.get(name)
+    pw = str(input("Please enter your password："))
+    password = messageuser[name]['password']
     if pw == password:
         print("Log in successfully")
-        user() #转到用户功能
+        user(name)  # 转到用户功能
     else:
         print("Wrong Password")
 
-
-
 def admin_register():
+    print('Admin register interface')
     name = input("Please enter your admin name")
     while True:
         if name in messageadmin:  #
-            temp = "This username has been taken, try another username："
+            temp = "This username has been taken, try another username"
             continue
         else:  # 没有此人的信息
             break
-    pw = input("Please enter your password：")
+    pw = input("Please enter your password")
     messageadmin[name] = pw
     print("Successfully register!")
 
 
 def admin_login():
+    print('Admin login interface')
     temp = "Please enter your admin name："
     while True:
         name = input(temp)
@@ -79,41 +163,43 @@ def admin_login():
         else:
             break
     pw = input("Please enter your password：")
-    password = messageuser.get(name)
+    password = messageadmin[name]['password']
     if pw == password:
         print("Log in successfully")
-        admin() #转到管理功能
+        admin(name)  # 转到管理功能
     else:
         print("Wrong Password")
 
 def main():
-    print("""
-    |---------Welcome to system------------|
-    |--- Create a new user account：N/n ---|
-    |---- Login user Account：S/s ---------|
-    |--- Create a new admin account：W/w---|
-    |----- Login admin Account：E/e -------|    
-    |---------- Log out：Q/q --------------|
-    """)
     while True:
-        chose = 0
-        while not chose:
-            print('\n')
-            order = input("Enter：")
-            if order not in 'QqNnEe':
-                print("Wrong input, please choose again!")
-            else:
-                chose = 1
+            print('*'*20)
+            print("""
+            |---------Welcome to system------------|
+            |--- Create a new user account：N/n ---|
+            |---- Login user Account：S/s ---------|
+            |--- Create a new admin account：W/w---|
+            |----- Login admin Account：E/e -------| 
+            """)
+            print('*'*20)
+            while True:
+                chose = 0
+                while not chose:
+                    print('\n')
+                    order = input("Enter:")
+                    if order not in 'QqNnSsWwEe':
+                        print("Wrong input, please choose again!")
+                    else:
+                        chose = 1
 
-        if order == 'N' or order == 'n':
-            user_register()
-        if order == 'S' or order == 's':
-            user_login()
-        if order == 'E' or order == 'e':
-            admin_login()
-        if order == 'W' or order == 'E':
-            admin_register()
-        if order == 'Q' or order == 'q':
-            break
+                if order == 'N' or order == 'n':
+                    user_register()
+                if order == 'S' or order == 's':
+                    user_login()
+                if order == 'E' or order == 'e':
+                    admin_login()
+                if order == 'W' or order == 'E':
+                    admin_register()
+
+
 
 main()
