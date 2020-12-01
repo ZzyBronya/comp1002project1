@@ -1,17 +1,20 @@
+paper_direct={'A':['C','D'],'B':0,'C':0,'D':['B']}# 论文与其他论文的直接引用关系
+paper_all={}
 messageuser = {
     'Tsai-ing': {'password':'12345', 'first_name': 'Tsai', 'last_name': 'Ingwen', 'Phone_number': '886-22311-3731',
-                 'relationship': {'Winnie': 0, 'Trump': 1},'paper':''},
+                 'relationship': {'Winnie': 0, 'Trump': 1},'paper':{}},
     'Trump': {'password':'12345', 'first_name': 'Donald', 'last_name': 'Trump', 'Phone_number': '1234567',
-              'relationship': {'Winnie': 1, 'Tsai-ing': 1},'paper':''},
+              'relationship': {'Winnie': 1, 'Tsai-ing': 1},'paper':{}},
     'Winnie': {'password':'12345', 'first_name': 'abc', 'last_name': 'def', 'Phone_number': '1234567890',
-               'relationship': {'Winnie': 1, 'Tsai-ing': 0},'paper':''}}
+               'relationship': {'Winnie': 1, 'Tsai-ing': 0},'paper':{}}}
 # username:{'password':'12345','first_name':'Tsai','last_name':'Ingwen'...与别人的关系：{}}三重列表！！最外层列表是用户名，第二层列表是用户个人信息，第三重是与别人关系
 messageadmin = {'dennis LIU': {'password': '123456'}}
 
 
+'''
 def isFriend(X, Y):
 
-'''
+
 def IsDirectSource(A, b):
 
 def isSource(A, B):
@@ -35,8 +38,10 @@ def admin(name):  # admin function
     print('Hello',name)
     print("""
     |---------Welcome to admin interface-----|
-    |--- print out the information for a user：N/n ---|
-    |--- print out the information for an article：S/s ---------|
+    |--- ：N/n ---|
+    |---- Login user Account：S/s ---------|
+    |--- Create a new admin account：W/w---|
+    |----- Login admin Account：E/e -------|    
     |---------- Log out：Q/q --------------|
     """)
 
@@ -54,14 +59,19 @@ def user(name):  # user function
             while not chose:
                 print('\n')
                 order = input("Enter：")
-                if order not in 'NnSsWwQq':
+                if order not in 'NnSsWw':
                     print("Wrong input, please choose again!")
                 else:
                     chose = 1
             if order=='N' or order=='n':# Submit paper
-                paper_index
-                aa=input('Please submit your paper(Just paste here):')
-                messageuser[name]['paper']=aa
+                paper_index=input('Please enter your paper index:')
+                while True:
+                    if paper_index in paper_direct:
+                        print('This index has been taken, try a new index.')
+                    else:
+                        break
+                aa=input('Please submit your paper content (Just paste here):')
+                messageuser[name]['paper'][paper_index]=aa
                 print('')
                 
             if order=='S' or order=='s': # Make friends
@@ -91,7 +101,11 @@ def user_register():
             continue
         else:  # 没有此人的信息
             break
+
     pw = input("Please enter your password:")
+    messageuser[name]={}
+    messageuser[name]['relationship']={}
+    messageuser[name]['paper']={}
     messageuser[name]['password'] = pw
     p1 = input('Please enter your first name:')
     messageuser[name]['first_name']=p1
@@ -102,22 +116,32 @@ def user_register():
     |--- Date-of-birth：N/n ---|
     |---- Phone number：S/s ---------|
     """)
-    pp=int(input('How many type of information are you going to add:'))
     while True:
-        chose = 0
-        while  chose <pp:
-            print('\n')
-            order = input("Enter：")
-            if order not in 'NnSs':
-                print("Wrong input, please choose again!")
-            else:
-                chose +=1
-        if order=='N' or order=='n':
-            messageuser[name]['Date-of-birth']=order
+        pp=input('How many type of information are you going to add:')
+        if pp.isdigit():
+            break
+        else:
+            print('Are you serious?')
 
-        if order=='S' or order=='s':
-            messageuser[name]['Phone_number']=order
+   
+    chose = 0
+    while  chose <int(pp):
+        print('\n')
+        order = input("Enter the type of information you would like to enter：")
+        if order not in 'NnSs':
+            print("Wrong input, please choose again!")
+        else:
+            chose +=1
+
+            if order=='N' or order=='n':
+                k1=input('Please enter your data of birth:')
+                messageuser[name]['Date-of-birth']=k1
+
+            if order=='S' or order=='s':
+                k2 = input('Please enter your phone number:')
+                messageuser[name]['Phone_number']=k2
     print("Successfully register!")
+    main()
 
 def user_login():
     print('User login interface')
@@ -149,6 +173,7 @@ def admin_register():
     pw = input("Please enter your password")
     messageadmin[name] = pw
     print("Successfully register!")
+    main()
 
 
 def admin_login():
