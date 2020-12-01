@@ -1,3 +1,6 @@
+# .py -->module 模块  
+# 包文件下第一个文件是_init_.py --> package 包
+# 具有相关功能模块的集合 --> library 库  安装时有标准库，第三方库是由别人开发的
 messageuser= {'Tsai-ing':{'password':'12345','first_name':'Tsai','last_name':'Ingwen','Phone_number':'886-22311-3731','relationship':{'Winnie':0,'Trump':1}},
               'Trump':{'password':'12345','first_name':'Donald','last_name':'Trump','Phone_number':'1234567','relationship':{'Winnie':1,'Tsai-ing':1}},
              'Winnie':{'password':'12345','first_name':'abc','last_name':'def','Phone_number':'1234567890','relationship':{'Winnie':1,'Tsai-ing':0}}}
