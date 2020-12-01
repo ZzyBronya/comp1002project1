@@ -37,7 +37,6 @@ def admin(name):  # admin function
     |---------Welcome to admin interface-----|
     |--- print out the information for a user：N/n ---|
     |--- print out the information for an article：S/s ---------|
-
     |---------- Log out：Q/q --------------|
     """)
 
@@ -55,7 +54,7 @@ def user(name):  # user function
             while not chose:
                 print('\n')
                 order = input("Enter：")
-                if order not in 'NnSsWw':
+                if order not in 'NnSsWwQq':
                     print("Wrong input, please choose again!")
                 else:
                     chose = 1
