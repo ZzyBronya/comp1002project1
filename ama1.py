@@ -1,5 +1,5 @@
-paper_direct = {'A': 'C', 'D': 'B','C':[],'D':[]}  # 论文与其他论文的直接引用关系
-paper_all = {'A':['C'],'D':['B'],'C':[],'D':[]}
+paper_direct = {'A': 'C', 'D': 'B','C':[],'B':[]}  # 论文与其他论文的直接引用关系
+paper_all = {'A':['C'],'D':['B'],'C':[],'B':[]}
 
 
 
@@ -25,33 +25,7 @@ def NicePrintA(A):
 def GetU(X):
 def GetA(A):
 '''
-def submit_article():
-    paper_index: str = input('Please enter your paper index:')
-    while True:
-        if paper_index in paper_direct:
-            print('This index has been taken, try a new index.')
-            continue
-        else:
-            break
-    aa = input('Please submit your paper content (Just paste here):')
-    messageuser[name]['paper'][paper_index] = aa
 
-    quote = input('Please enter quoted article,if no quoting,enter none')
-    if quote == 'none':
-        paper_direct[paper_index] = []
-        paper_all[paper_index]=[]
-
-    else:
-        while True:
-            if paper_index not in paper_direct:        # avoid quote wrong article
-                print('This quote does not been exist, try a new quote.')
-                continue
-            else:
-                paper_direct[paper_index] = quote
-                paper_all[paper_index] = [quote]
-                paper_all[paper_index].extend(paper_all[quote])
-                break
-    print('')
 
 
 
@@ -87,7 +61,33 @@ def user(name):  # user function
                 else:
                     chose = 1
             if order == 'N' or order == 'n':  # Submit paper
-                submit_article()
+                while True:
+                    paper_index: str = input('Please enter your paper index:')
+                    if paper_index in paper_direct:
+                        print('This index has been taken, try a new index.')
+                        continue
+                    else:
+                        break
+                aa = input('Please submit your paper content (Just paste here):')
+                messageuser[name]['paper'][paper_index] = aa
+
+                while True:
+                    quote = input('Please enter quoted article,if no quoting,enter none')
+                    if quote not in paper_direct:  # avoid quote wrong article
+                        print('This quote does not exist, try a new quote.')
+                        continue
+
+                    if quote == 'none':
+                        paper_direct[paper_index] = []
+                        paper_all[paper_index] = []
+                        break
+
+                    else:
+                        paper_direct[paper_index] = quote
+                        paper_all[paper_index] = [quote]
+                        paper_all[paper_index].extend(paper_all[quote])
+                        break
+                print('')
 
             if order == 'S' or order == 's':  # Make friends
                 for i in messageuser:
@@ -240,6 +240,8 @@ def main():
                 admin_login()
             if order == 'W' or order == 'E':
                 admin_register()
+
+
 
 
 def IsDirectSource(a, b):
