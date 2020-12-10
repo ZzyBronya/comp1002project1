@@ -1,0 +1,453 @@
+import shelve
+
+'''
+user_message.txt # 反映作者与作者,作者与论文之关系
+     {
+    'Tsai-ing': {'password': '12345', 'first_name': 'Tsai', 'last_name': 'Ingwen', 'Phone_number': '886-22311-3731',
+                 'friend':[], 'paperindex':[]},
+    'Trump': {'password': '12345', 'first_name': 'Donald', 'last_name': 'Trump', 'Phone_number': '1234567',
+              'friend':[], 'paperindex':[]},
+    'Winnie': {'password': '12345', 'first_name': 'abc', 'last_name': 'def', 'Phone_number': '1234567890',
+               'friend': [], 'paperindex':[]}}
+
+admin_message.txt # 查询所有关系
+{'dennis LIU': {'password': '123456'}}
+
+paper.txt # 反映论文与论文之关系
+ {paper_index:{'original text':(),'direct_source':[index],'all_source':[index]}} 
+
+def isFriend(X, Y):
+def IsDirectSource(A, b):
+def isSource(A, B):
+def Anchor(A):
+def DirectReport(A):
+def Report(A):
+def NicePrientU(X):
+def NicePrintA(A):
+def GetU(X):
+def GetA(A):
+'''
+
+def admin(name):  # admin function
+    print('Hello', name)
+    papers = shelve.open('paper.txt', flag='c', writeback=True)
+    users= shelve.open('user_message.txt', flag='c', writeback=True)
+    while True:
+        print("""
+        |-----------------------Welcome to admin interface--------------------------------------|
+        |--- Search paper database (Search for the information of a specific paper)：N/n -------|
+        |----Search user database  (Search for the information of a specific paper)：S/s ---------|
+        |--------Verify whether if user X and Y are friends: P/p--------- |
+        |----return True if article A is a direct source of B, and False otherwise:W  ---|
+        |----  return True if A is either a direct source of B or an indirect source of B, and False otherwise: w---|
+        |----- return the list of articles that directly quote A as source：E  -------|    
+        |-------return the list of articles that directly or indirectly quote A as source: e-------------|
+        |------Find Anchor: A/a----------------|
+        |---------- Log out：Q/q --------------|
+        """)
+        a1=input('Enter :')
+        if a1=='N' or a1=='n':
+            if papers:
+                print('All the paper represented by index:', end='')
+                for i in papers:
+                    print(i,end=' / ')
+                while True:
+                    print('''Are you going to search for the information of a specific paper? 
+                            If yes, enter the index of the paper
+                            If no, enter Q/q''')
+                    ki=input('Enter:')
+                    if ki in papers:
+                        NicePrintA(papers,ki)
+                    elif ki=='Q' or ki=='q':
+                        break
+                    else:
+                        print('Wrong input')
+            if not papers:
+                print('No paper yet')
+            
+
+        if a1 == 'S' or a1 == 's': 
+            if users:
+                print('All the username:', end=' / ')
+                for i in users:
+                    print(i,end=' // ')
+
+            while True:
+                print('''Are you going to search for the information of a specific user?
+                                If yes, enter the username
+                                If no, enter Q/q''')
+                b1=input('Enter:')
+                if b1 in users:
+                    NicePrintU(users,b1)
+                    users.close()
+                elif b1=='Q' or b1=='q':
+                    users.close()
+                    break
+                else:
+                    print('Wrong input')
+
+            if not users:
+                print('No user yet')
+        if a1 == 'p' or a1 == 'P': 
+            while True:
+                p1=input('Please enter a username:')
+                p2=input('Please enter a username:')
+                if p1 in users and p2 in users:
+                    print(isFriend(users,p1,p2))
+                else:
+                    print('Wrong input')
+        if a1=='W':
+            while True:
+                article=input('Enter the index of the article A')
+                source=input("Enter the index of article to verify whether it's the source of article A")
+                if article in papers and source in papers:
+                    print(isDirectSource(papers,article,source))
+                    break
+                else:
+                    print('Wrong input')
+                
+        if a1=='w':
+            while True:
+                article=input('Enter the index of the article A')
+                source=input("Enter the index of article to verify whether it's the source of article A")
+                if article in papers and source in papers:
+                    print(isDirectSource(papers,article,source))
+                    break
+                else:
+                    print('Wrong input')
+
+        if a1=='E':
+            while True:
+                A1=input('Enter an index:')
+                if A1 in papers:
+                    print(DirectReport(papers,A1))
+                    break
+                else:
+                    print('Wrong input')
+        if a1 == 'e':
+            while True:
+                A1=input('Enter an index:')
+                if A1 in papers:
+                    print(Report(papers,A1))
+                    break
+                else:
+                    print('Wrong input')
+        if a1 == 'p' or a1 == 'P':
+            while True:
+                A1 = input('Enter an index:')
+                if A1 in papers:
+                    print(Anchor(papers, A1))
+                    break
+                else:
+                    print('Wrong input')
+
+
+
+
+
+def user(db,name):  # user function  db means a specific database
+    print('Hello', name)
+    while True:
+        print("""
+        |--- Welcome to user interface------|
+        |--- Submit Paper：N/n -------------|
+        |--- Make friends: S/s--------------|
+        |--- Back to main interface: Q/q----|
+        """)
+        while True:  # 上传paper
+            chose = 0
+            while not chose:
+                print('\n')
+                order = input("Enter：")
+                if order not in 'NnSsQq':
+                    print("Wrong input, please choose again!")
+                else:
+                    chose = 1
+            if order == 'N' or order == 'n':  # Submit paper
+                while True:
+                    paper_index = input('Please enter your paper index:')
+                    if paper_index in db[name]['paperindex']: # operate on auchor
+                        print('This index has been taken, try a new index.')
+                        continue
+                    else:
+                        break
+                db[name]['paperindex'].append(paper_index)# index不仅与用户产生关联
+                text= input('Please submit your paper content (Just paste here):')
+                paper = shelve.open('paper.txt', flag='c', writeback=True) # add the paper index to the corresponding auchor
+
+                paper[paper_index]={}
+                paper[paper_index]['original text']=text
+        #  {paper_index:{'original text':(),'direct_source':[index],'all_source':[index]}} index 还与其它论文产生关联
+                while True:
+                    quote = input('Please enter the index of quoted article,enter none if not quoting')
+                    if quote == 'none':
+                        paper[paper_index]['direct_source']=[]
+                        paper[paper_index]['all_source']=[]
+                        break
+
+                    elif quote not in paper:  # avoid quote wrong article
+                        print('This quote does not exist, try a new quote.')
+                        continue
+
+
+                    else:
+                        paper[paper_index]['direct_source']=quote
+
+                        paper[paper_index]['all_source']= [quote]
+                        indirect_quote=[]
+                        for i in paper[quote]['all_source']:
+                            indirect_quote.append(i)
+
+                        paper[paper_index]['all_source'].extend(indirect_quote)
+                        break
+
+                paper.close()  # save paper in a text
+                print('')
+            if order == 'S' or order == 's':  # Make friends
+                for i in db:
+                    if i != name or i in db[name]['friend']:
+                        print(i, end=' // ')
+                print('')
+                print("Enter your friend's username one by one:")
+                while True:
+                    a1 = str(input("Enter your friend's username(If no more, enter 'No' to exit):"))
+                    if a1 == 'No':
+                        break
+                    elif a1 in db and a1 not in db[name]['friend'] and name not in db[a1]['friend']:
+                        db[name]['friend']=db[name]['friend'].append(str(a1))
+                        db[a1]['friend']=db[a1]['friend'].append(str(name))
+                    else:
+                        print('Wrong enter')
+            if order == 'Q' or order == 'q':
+                db.close()
+                main()
+
+
+def user_register(db):
+    print('User register interface')
+
+    while True:
+        name = str(input("Please enter your username:"))
+        if name in db:
+            print("This username has been taken, try another username!!!")
+            continue
+        else:  # 没有此人的信息
+            break
+
+    pw = str(input("Please enter your password:"))
+    db[name] = {}
+    db[name]['friend'] = []
+    db[name]['paperindex'] = []
+    db[name]['password'] = pw
+    p1 = input('Please enter your first name:')
+    db[name]['first_name'] = p1
+    p2 = input('Please enter your last name:')
+    db[name]['last_name'] = p2
+    print("""
+    |----------------Add auxiliary information one by one-----------------|
+    |------------------- Date-of-birth------------------------------------|
+    |--------------------- Phone number-----------------------------------|
+    |---If you would not like to add certain information, Enter None -----|
+    """)
+    while True:
+        k1 = input('Please enter your data of birth (e.g.2000-02-02):')
+        if '-' not in k1 and k1 !='None':
+            print('Wrong input')
+        else:
+            db[name]['Date-of-birth'] = k1
+            break
+    k2 = input('Please enter your phone number:')
+    db[name]['Phone_number'] = k2
+
+    print("Successfully register!")
+    db.close()
+    main()
+
+
+def user_login(db):
+    print('User login interface')
+    temp = "Please enter your username:"
+    while True:
+        name = str(input(temp))
+        if name not in db:
+            temp = "Username Wrong, try again："
+            continue
+        else:
+            break
+    password = db[name]['password']
+    while True:
+        pw = str(input("Please enter your password(Enter Q/q to back to main interface)："))
+        
+        if pw == password:
+            print("Log in successfully")
+            user(db,name)  # 转到用户功能
+        elif pw=='q' or pw =='Q':
+            main()
+        else:
+            print("Wrong input")
+
+
+def admin_register(db):
+    print('Admin register interface')
+    while True:
+        name = str(input("Please enter your admin name"))
+        if name in db:  #
+            temp = "This username has been taken, try another username"
+            continue
+        else:  # 没有此人的信息
+            break
+
+    pw = str(input("Please enter your password"))
+    db[name] = {}
+    db[name]['password']=pw
+    print("Successfully register!")
+    db.close()
+    main()
+
+
+def admin_login(db):
+    print('Admin login interface')
+    temp = "Please enter your admin name："
+    while True:
+        name = str(input(temp))
+        if name not in db:
+            temp = "Username Wrong, try again："
+            continue
+        else:
+            break
+    
+    password = db[name]['password']
+    while True:
+        pw = str(input("Please enter your password(Enter Q/q to back to main interface)："))
+        if pw == password:
+            print("Log in successfully")
+            admin(name)  # 转到管理功能
+        elif pw=='q' or pw =='Q':
+            main()
+        else:
+            print("Wrong input")
+
+def main():
+    while True:
+        print('*' * 20)
+        print("""
+            |---------Welcome to system------------|
+            |--- Create a new user account：N/n ---|
+            |---- Login user Account：S/s ---------|
+            |--- Create a new admin account：W/w---|
+            |----- Login admin Account：E/e -------| 
+            """)
+        print('*' * 20)
+        while True:
+            chose = 0
+            while not chose:
+                print('\n')
+                order = input("Enter:")
+                if order not in 'QqNnSsWwEe':
+                    print("Wrong input, please choose again!")
+                else:
+                    chose = 1
+
+            if order == 'N' or order == 'n':
+                user_database=shelve.open('user_message.txt',flag='c',writeback=True)
+                user_register(user_database)
+            if order == 'S' or order == 's':
+                user_database = shelve.open('user_message.txt', flag='c', writeback=True)
+                user_login(user_database)
+            if order == 'E' or order == 'e':
+                admin_database = shelve.open('admin_message.txt', flag='c', writeback=True)
+                admin_login(admin_database)
+            if order == 'W' or order == 'w':
+                admin_database = shelve.open('admin_message.txt', flag='c', writeback=True)
+                admin_register(admin_database)
+
+def isFriend(db,X,Y):
+    if X in db[Y]['friend']:
+        return True
+    else:
+        return False
+    
+def isDirectSource(db,a, b):
+    if a in db[b]['direct_source']:
+        return True
+    else :
+        return False
+
+def isSource(db,a, b):
+    if a in db[b]['all_source']:
+        return True
+    else :
+        return False
+
+def Anchor(db,A):
+    kk = []
+    if not db[A]['all_source']:                   #anchor dosen't have anchor
+        return('There is no anchor')
+    
+    else:
+        for article in db[A]['all_source']:      #find the anchor in the sourse of A
+            if db[article]['all_source'] == []:
+                kk.append(article)
+        return kk
+
+def DirectReport(db,A):
+    dicreport = []
+    for key in db:
+        if A in key['direct_source']:
+            dicreport.append(key)
+    return dicreport
+def Report(db,A):
+    dicreport = []
+    for key in db:
+        if A in key['all_source']:
+            dicreport.append(key)
+            
+    return dicreport
+
+def NicePrintU(db,name):
+    First_name=db[name]['first_name'].upper()
+    Last_name=db[name]['last_name'].title()
+    Dateofbirth=db[name]['Date-of-birth']
+    Phonenumber=db[name]['Phone_number']
+    friend=db[name]['friend']
+    paper=db[name]['paperindex']
+    print('''
+    Username: %s
+    First name: %s
+    Last name: %s
+    Date of birth: %s
+    Phone number: %s
+    ''' %(name,First_name,Last_name,Dateofbirth,Phonenumber))
+    if friend:
+        print('Friend:',end='')
+        for i in friend:
+            print(i,end=',')
+    else:
+        print('No friend')
+    if paper:
+        print('Paper(represented by index):',end='')
+        for i in paper:
+            print(i,end=',')
+    else:
+        print('No paper')
+
+def NicePrintA(db,index):
+    direct_source=db['direct_source']
+    all_source=db['all_source']
+
+    print('Original text:',db['original text'],end='\n')
+    if direct_source:
+        print('Direst sources of this paper:',end='')
+        for i in direct_source:
+            print(i,end=',')
+    else:
+        print('No direct source')
+    if all_source:
+        print('All sources of this paper:',end='')
+        for i in all_source:
+            print(i,end=',')
+    else:
+        print('No direct or indirect source')
+
+    
+main()
